@@ -17,10 +17,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('order', \App\Http\Controllers\OrderController::class)->middleware('verified');
+Route::resource('order', \App\Http\Controllers\OrderController::class)
+    ->only([
+        'index',
+        'show',
+        'store',
+        'create',
+    ])
+    ->middleware('verified');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class,
+    'index',
+])->name('home');
 
 

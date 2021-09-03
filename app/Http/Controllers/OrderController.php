@@ -25,7 +25,9 @@ class OrderController extends Controller
             'company',
         ];
         $userId = Auth::id();
-        $items = Order::where('user_id', $userId)->paginate(10);
+        $items = Order::select($columns)
+            ->where('user_id', $userId)
+            ->paginate(10);
         return view('orders.index', compact('items'));
     }
 
@@ -47,20 +49,10 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request, Order $order)
     {
-        $fields = $request->except('file');
-        $fields['user_id'] = Auth::id();
-        $data = $request->all();
-        $res = $order->save($data);
-        // загрузка файла
-        if ($request->isMethod('post') && $request->file('file')) {
-
-            $file = $request->file('file');
-            $upload_folder = 'public';
-            $filename = date('h-m-Y-m-d') . '_' . $file->getClientOriginalName();
-            Storage::putFileAs($upload_folder, $file, $filename);
-            $fields['file'] = $filename;
-        }
-        $order = Order::create($fields);
+        $data = $request->except('file');
+        $filename = $order->saveFile($request->file('file'));
+        $data['file'] = $filename;
+        $result = $order->create($data);
         return back()->with('success', 'Заявка успешно создана');
     }
 
@@ -78,39 +70,5 @@ class OrderController extends Controller
             abort(404);
         }
         return view('orders.show', compact('order'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        dd(__METHOD__);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        dd(__METHOD__);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        dd(__METHOD__);
     }
 }
