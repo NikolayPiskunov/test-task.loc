@@ -53,14 +53,14 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Имя*</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
                                 <div class="invalid-tooltip">
                                     Поле должно быть заполнено
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Телефон*</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}">
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
                                 <div class="invalid-tooltip">
                                     Поле должно быть заполнено
                                 </div>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="title" class="form-label">Название заявки*</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                                 <div class="invalid-tooltip">
                                     Поле должно быть заполнено
                                 </div>
